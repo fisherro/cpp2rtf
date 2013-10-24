@@ -1,0 +1,43 @@
+DONE:
+Changed a for(;;) to a for(:).
+Changed vector<text_run*> to vector<unique_ptr<text_run>>.
+Deleted vector_cleaner. (Thanks to unique_ptr.)
+Changed a for_each to a for(:).
+Changed print(ostream*) to print(ostream&).
+Changed some cout uses that should've just been out.
+Changed a bunch of declarations to auto.
+Fix code formatting.
+Capitalize class names.
+Make multiline comments Times italic.
+Rethink init_keywords.
+Make keyword sets const?
+Use move for text_run constructors? (Not necessary.)
+
+TODO:
+Use \tab?
+Convert leading spaces to tabs?
+Would like to use CRLF for endl.
+Use RTF stylesheets?
+Use make_unique?
+Consider fancier getline code.
+Use std regex?
+New initialization syntax?
+Enable modifying the styles used.
+Optionally output to HTML5+CSS.
+Use asserts?
+Typeset Scheme code too.
+Optionally read/write files instead of cin/cout.
+Command line switch for debug flag.
+User controlled keyword options
+Don't use global for multiline comments?
+Use C++11 enums?
+
+HOW SHOULD ... BE TYPESET?
+\u or \U for characters
+0x or 0X in hex literals
+[A-Fa-f] in hex literals
+Numeric literal suffixes (u U l L ll LL)
+Letters in float literals (e E p P f F l L)
+L prefix for character and string literals
+The backslash for line continuation
+
