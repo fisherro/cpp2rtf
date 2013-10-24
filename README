@@ -1,5 +1,3 @@
-(There is already a cpp2rtf. I should pick another name.)
-
 I liked the way code was typeset in Bjarne Stroustrup's THE C++ PROGRAMMING
 LANGUAGE third edition. Essentially, identifiers were set in a proportional-
 width typeface while other characters remained in a monospace typeface. I
