@@ -42,14 +42,25 @@ const std::set<std::string> c_keywords{
 };
 
 const std::set<std::string> cpp_keywords{
-    "asm", "dynamic_cast", "namespace", "reinterpret_cast", "try", "bool",
-    "explicit", "new", "static_cast", "typeid", "catch", "false", "operator",
-    "template", "typename", "class", "friend", "private", "this", "using",
-    "const_cast", "inline", "public", "throw", "virtual", "delete", "mutable",
-    "protected", "true", "wchar_t", "and", "bitand", "compl", "not_eq", "or_eq",
-    "xor_eq", "and_eq", "bitor", "not", "or", "xor", "alignas", "alignof",
-    "char16_t", "char32_t", "constexpr", "decltype", "noexcept", "nullptr",
-    "static_assert", "thread_local"
+    "alignas", "alignof", "and", "and_eq", "asm", "auto", "bitand", "bitor",
+    "bool", "break", "case", "catch", "char", "char8_t", "char16_t", "char32_t",
+    "class", "compl", "concept", "const", "consteval", "constexpr", "constinit",
+    "const_cast", "continue", "co_await", "co_return", "co_yield", "decltype",
+    "default", "delete", "do", "double", "dynamic_cast", "else", "enum",
+    "explicit", "export", "extern", "false", "float", "for", "friend", "goto",
+    "if", "inline", "int", "long", "mutable", "namespace", "new", "noexcept",
+    "not", "not_eq", "nullptr", "operator", "or", "or_eq", "private",
+    "protected", "public", "register", "reinterpret_cast", "requires", "return",
+    "short", "signed", "sizeof", "static", "static_assert", "static_cast",
+    "struct", "switch", "template", "this", "thread_local", "throw", "true",
+    "try", "typedef", "typeid", "typename", "union", "unsigned", "using",
+    "virtual", "void", "volatile", "wchar_t", "while", "xor", "xor_eq",
+    
+    //Identifiers with special meaning
+    "override", "final", "import", "module",
+    
+    //Weird
+    "_Pragma",
 };
 
 //Is there a better way to do this?
