@@ -31,7 +31,14 @@ const std::set<std::string> c_keywords{
     "sizeof", "static", "struct", "switch", "typedef", "union", "unsigned",
     "void", "volatile", "while", "_Alignas", "_Alignof", "_Atomic", "_Bool",
     "_Complex", "_Generic", "_Imaginary", "_Noreturn", "_Static_assert",
-    "_Thread_local"
+    "_Thread_local",
+    //Not actually keywords, but usually used instead of underscore keywords:
+    "alignas", "alignof", "bool", "complex", "imaginary", "noreturn",
+    "static_assert", "thread_local",
+    //Weird...
+    "_Pragma",
+    //Extensions
+    "asm", "fortran",
 };
 
 const std::set<std::string> cpp_keywords{
