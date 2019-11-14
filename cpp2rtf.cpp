@@ -1,4 +1,5 @@
 #include <array>
+#include <algorithm>
 #include <cstdlib>
 #include <functional>
 #include <iostream>
@@ -6,10 +7,14 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <typeinfo>
+#include <unordered_map>
 #include <vector>
 
 const std::string CRLF{"\x0d\x0a"};
+
+using Opts = std::unordered_map<std::string, std::string>;
 
 bool debug{true};
 
@@ -345,11 +350,25 @@ void process_line(std::ostream& out, const std::string& line)
     out << "\\line" << CRLF;
 }
 
-void process(std::ostream& out, std::istream& in)
+std::string get_opt(
+        const Opts& opts,
+        const std::string& key,
+        const std::string& default_value)
 {
+    auto iter{opts.find(key)};
+    if (opts.end() == iter) return default_value;
+    return iter->second;
+}
+
+void process(const Opts& opts, std::ostream& out, std::istream& in)
+{
+    std::string mono{get_opt(opts, "mono", "Courier")};
+    std::string prop{get_opt(opts, "prop", "Times")};
+
     //Write header.
     out << "{\\rtf1\\ansi" << CRLF;
-    out << "{\\fonttbl\\f0\\fmodern Courier;\\f1\\froman Times;}" << CRLF;
+    out << "{\\fonttbl\\f0\\fmodern " << mono
+        << ";\\f1\\froman " << prop << ";}" << CRLF;
     out << "{\\f0 ";
 
     //Process lines.
@@ -362,9 +381,76 @@ void process(std::ostream& out, std::istream& in)
     out << "}}" << CRLF;
 }
 
-int main(int argc, char** argv)
+bool starts_with(std::string_view look_in, std::string_view look_for)
 {
-    process(std::cout, std::cin);
+    return (look_in.size() >= look_for.size()) and
+        (0 == look_in.compare(0, look_for.size(), look_for));
+}
+
+void usage(std::string_view name)
+{
+    std::cout << "usage: " << name << " [--option=value ...] [files ...]\n";
+    std::cout << "--mono=<name>\tMonospaced font name\n";
+    std::cout << "--prop=<name>\tProportional font name\n";
+    std::exit(EXIT_SUCCESS);
+}
+
+struct Parsed_args {
+    Opts opts;
+    std::vector<std::string> args;
+};
+
+void dump_args(const Parsed_args& args)
+{
+    std::cerr << "Opts:\n";
+    for (const auto& opt: args.opts) {
+        std::cerr << '\t' << opt.first << '=' << opt.second << '\n';
+    }
+    std::cerr << "Args:\n";
+    for (const auto& arg: args.args) {
+        std::cerr << '\t' << arg << '\n';
+    }
+}
+
+/*
+ * If I'm not going to use a library for this, let's keep it simple.
+ * Options always start with "--".
+ * If an option takes a value, it is always provided via '-'.
+ */
+Parsed_args parse_args(int argc, const char** argv)
+{
+    Parsed_args parsed;
+    std::vector<std::string_view> args{argv + 1, argv + argc};
+    for (std::string_view arg: args) {
+        if ("--help" == arg) {
+            usage(argv[0]); //Doesn't return
+        }
+
+        if (starts_with(arg, "--")) {
+            arg.remove_prefix(2);
+            auto equals{arg.find('=')};
+            if (arg.npos != equals) {
+                std::string key{arg.substr(0, equals)};
+                std::string value{arg.substr(equals + 1)};
+                std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+                parsed.opts[key] = value;
+            } else {
+                std::string key{arg};
+                std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+                parsed.opts[key] = "";
+            }
+        } else {
+            parsed.args.push_back(std::string{arg});
+        }
+    }
+    return parsed;
+}
+
+int main(int argc, const char** argv)
+{
+    Parsed_args args{parse_args(argc, argv)};
+    dump_args(args);
+    process(args.opts, std::cout, std::cin);
     return EXIT_SUCCESS;
 }
 
