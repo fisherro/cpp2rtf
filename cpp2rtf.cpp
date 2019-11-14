@@ -9,6 +9,8 @@
 #include <typeinfo>
 #include <vector>
 
+const std::string CRLF{"\x0d\x0a"};
+
 bool debug{true};
 
 const std::string id_1st_chars{
@@ -63,7 +65,7 @@ class Text_run {
         {
             if (debug) {
                 std::cerr << typeid(*this).name() << ": \"" << text_ << "\"" <<
-                    std::endl;
+                    '\n';
             }
             print_(out);
         }
@@ -340,16 +342,14 @@ void process_line(std::ostream& out, const std::string& line)
     parse(list, line, true);
     for (auto const& i: list) i->print(out);
     //Write line break.
-    out << "\\line" << std::endl;
-
+    out << "\\line" << CRLF;
 }
 
 void process(std::ostream& out, std::istream& in)
 {
     //Write header.
-    out << "{\\rtf1\\ansi" << std::endl;
-    out << "{\\fonttbl\\f0\\fmodern Courier;\\f1\\froman Times;}" <<
-        std::endl;
+    out << "{\\rtf1\\ansi" << CRLF;
+    out << "{\\fonttbl\\f0\\fmodern Courier;\\f1\\froman Times;}" << CRLF;
     out << "{\\f0 ";
 
     //Process lines.
@@ -359,7 +359,7 @@ void process(std::ostream& out, std::istream& in)
     }
 
     //Write footer.
-    out << "}}" << std::endl;
+    out << "}}" << CRLF;
 }
 
 int main(int argc, char** argv)
