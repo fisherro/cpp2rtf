@@ -108,7 +108,7 @@ class Char_literal: public Text_run {
         Char_literal(const std::string& text)
             : Text_run(text.substr(1, text.size() - 2)) {}
     protected:
-        virtual void print_(std::ostream& out) const
+        void print_(std::ostream& out) const override
         {
             out << '\'';
             out << "{\\f1\\i ";
@@ -123,7 +123,7 @@ class String_literal: public Text_run {
         String_literal(const std::string& text)
             : Text_run(text.substr(1, text.size() - 2)) {}
     protected:
-        virtual void print_(std::ostream& out) const
+        void print_(std::ostream& out) const override
         {
             out << '"';
             out << "{\\f1\\i ";
@@ -138,7 +138,7 @@ class Single_line_comment: public Text_run {
         Single_line_comment(const std::string& text)
             : Text_run(text.substr(2)) {}
     protected:
-        virtual void print_(std::ostream& out) const
+        void print_(std::ostream& out) const override
         {
             out << "//";
             out << "{\\f1\\i ";
@@ -153,7 +153,7 @@ class Multiline_comment: public Text_run {
         Multiline_comment(Kind kind, const std::string& text)
             : Text_run(text), kind_(kind) {}
     protected:
-        virtual void print_(std::ostream& out) const
+        void print_(std::ostream& out) const override
         {
             if ((kind_ == complete) || (kind_ == start)) out << "/*";
             out << "{\\f1\\i ";
@@ -171,7 +171,7 @@ class Identifier: public Text_run {
         Identifier(const std::string& text)
             : Text_run(text) {}
     protected:
-        virtual void print_(std::ostream& out) const
+        void print_(std::ostream& out) const override
         {
             out << "{\\f1\\i ";
             out << escape(get_text());
@@ -183,7 +183,7 @@ class Keyword: public Text_run {
     public:
         Keyword(const std::string& text): Text_run(text) {}
     protected:
-        virtual void print_(std::ostream& out) const
+        void print_(std::ostream& out) const override
         {
             out << "{\\f1\\b ";
             out << escape(get_text());
